@@ -47,11 +47,11 @@ void display() {
 	glTranslatef(-3.0f, 0.0f, -10.0f);  // Left most cube [KHB]
 
 	//Take user input axis [KHB] 
-	if (cube1axis == 'x' || 'X')
+	if (cube1axis == ('x' | 'X'))
 		glRotatef(angleCube1, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
-	else if (cube1axis == 'y' || 'Y')
+	else if (cube1axis == ('y' | 'Y'))
 		glRotatef(angleCube1, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
-	else if (cube1axis == 'z' || 'Z')
+	else if (cube1axis == ('z' | 'Z'))
 		glRotatef(angleCube1, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
 	else
 		glRotatef(angleCube1, 1.0f, 0.0f, 0.0f);  // Base case rotate on x-axis [KHB] 
@@ -106,11 +106,11 @@ void display() {
 	glTranslatef(0.0f, 0.0f, -10.0f);  // center cube [KHB] 
 
 	//Take user input axis [KHB] 
-	if (cube2axis == 'x' || 'X')
+	if (cube2axis == ('x' | 'X'))
 		glRotatef(angleCube2, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
-	else if (cube2axis == 'y' || 'Y')
+	else if (cube2axis == ('y' | 'Y'))
 		glRotatef(angleCube2, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
-	else if (cube2axis == 'z' || 'Z')
+	else if (cube2axis == ('z' | 'Z'))
 		glRotatef(angleCube2, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
 	else
 		glRotatef(angleCube2, 0.0f, 1.0f, 0.0f);  // Base case rotate on y-axis [KHB] 
@@ -166,11 +166,11 @@ void display() {
 	glTranslatef(3.0f, 0.0f, -10.0f);  // right most cube [KHB] 
 
 	//Take user input axis [KHB] 
-	if (cube3axis == 'x' || 'X')
+	if (cube3axis == ('x' | 'X'))
 		glRotatef(angleCube3, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
-	else if (cube3axis == 'y' || 'Y')
+	else if (cube3axis == ('y' | 'Y'))
 		glRotatef(angleCube3, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
-	else if (cube3axis == 'z' || 'Z')
+	else if (cube3axis == ('z' | 'Z'))
 		glRotatef(angleCube3, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
 	else
 		glRotatef(angleCube3, 0.0f, 0.0f, 1.0f);  // Base case rotate on z-axis [KHB] 
