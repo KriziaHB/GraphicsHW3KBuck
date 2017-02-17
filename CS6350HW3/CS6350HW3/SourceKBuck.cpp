@@ -2,8 +2,8 @@
 //CSCI 6350 Graphics HW 3
 //Due: 02/17/2017 
 
-
-//https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
+//Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
+//Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
 
 
 
