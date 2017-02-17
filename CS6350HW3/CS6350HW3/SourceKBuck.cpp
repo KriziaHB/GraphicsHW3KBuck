@@ -24,6 +24,8 @@ GLfloat angleCube3 = 0.0f;  // Rotational angle for cube [KHB]
 char cube1axis = 'x'; // Cube 1 user axis choice [KHB] 
 char cube2axis = 'y'; // Cube 2 user axis choice [KHB]
 char cube3axis = 'z'; // Cube 3 user axis choice [KHB]
+GLdouble xp, yp, zp, xd, yd, zd, xu, yu, zu; // for camera rotation [KHB] 
+float theta = 0.0; 
 int refreshMills = 15;        // refresh interval in milliseconds 
 
 							  /* Initialize OpenGL Graphics */
@@ -41,6 +43,21 @@ whenever the window needs to be re-painted. */
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+
+
+	// CHANGES FOR CAMERA BUT DOESN"T WORK YET 
+	xp = 10*cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
+	yp = 0; 
+	zp = 10*sin(theta); 
+	xd = -cos(theta); 
+	yd = 0; 
+	zd = -sin(theta); 
+	xu = 0; 
+	yu = 1; 
+	zu = 0; 
+	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu);
+	theta += 10; 
+	// ENDS HERE 
 
 									// Render a color-cube consisting of 6 quads with different colors
 	glLoadIdentity();                 // Reset the model-view matrix
