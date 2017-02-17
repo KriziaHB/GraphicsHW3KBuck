@@ -13,12 +13,17 @@
 */
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
+#include <iostream> 
+using namespace std; 
 
 /* Global variables */
 char title[] = "3 Cubes Rotating on an Axis with Camera Movement ";
-GLfloat angleCube1 = 0.0f;  // Rotational angle for cube on x [KHB] 
-GLfloat angleCube2 = 0.0f;  // Rotational angle for cube on y [KHB] 
-GLfloat angleCube3 = 0.0f;  // Rotational angle for cube on z [KHB] 
+GLfloat angleCube1 = 0.0f;  // Rotational angle for cube [KHB] 
+GLfloat angleCube2 = 0.0f;  // Rotational angle for cube [KHB] 
+GLfloat angleCube3 = 0.0f;  // Rotational angle for cube [KHB] 
+char cube1axis = 'x'; // Cube 1 user axis choice [KHB] 
+char cube2axis = 'y'; // Cube 2 user axis choice [KHB]
+char cube3axis = 'z'; // Cube 3 user axis choice [KHB]
 int refreshMills = 15;        // refresh interval in milliseconds 
 
 							  /* Initialize OpenGL Graphics */
@@ -40,7 +45,16 @@ void display() {
 									// Render a color-cube consisting of 6 quads with different colors
 	glLoadIdentity();                 // Reset the model-view matrix
 	glTranslatef(-3.0f, 0.0f, -10.0f);  // Left most cube [KHB]
-	glRotatef(angleCube1, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
+
+	//Take user input axis [KHB] 
+	if (cube1axis == 'x' || 'X')
+		glRotatef(angleCube1, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
+	else if (cube1axis == 'y' || 'Y')
+		glRotatef(angleCube1, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
+	else if (cube1axis == 'z' || 'Z')
+		glRotatef(angleCube1, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
+	else
+		glRotatef(angleCube1, 1.0f, 0.0f, 0.0f);  // Base case rotate on x-axis [KHB] 
 
 	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
 									  // Top face (y = 1.0f)
@@ -90,7 +104,16 @@ void display() {
 			  // Render another cube
 	glLoadIdentity();                  // Reset the model-view matrix
 	glTranslatef(0.0f, 0.0f, -10.0f);  // center cube [KHB] 
-	glRotatef(angleCube2, 0.0f, 1.0f, 0.0f);  // Rotate about the (0,1,0) y-axis [KHB]
+
+	//Take user input axis [KHB] 
+	if (cube2axis == 'x' || 'X')
+		glRotatef(angleCube2, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
+	else if (cube2axis == 'y' || 'Y')
+		glRotatef(angleCube2, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
+	else if (cube2axis == 'z' || 'Z')
+		glRotatef(angleCube2, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
+	else
+		glRotatef(angleCube2, 0.0f, 1.0f, 0.0f);  // Base case rotate on y-axis [KHB] 
 
 	//[KHB] 
 	glBegin(GL_QUADS);           // Begin drawing the color cube with 6 quads [KHB] 
@@ -141,7 +164,16 @@ void display() {
 			  // Render a third cube
 	glLoadIdentity();                  // Reset the model-view matrix
 	glTranslatef(3.0f, 0.0f, -10.0f);  // right most cube [KHB] 
-	glRotatef(angleCube3, 0.0f, 0.0f, 1.0f);  // Rotate about the (0,0,1) z-axis [KHB]
+
+	//Take user input axis [KHB] 
+	if (cube3axis == 'x' || 'X')
+		glRotatef(angleCube3, 1.0f, 0.0f, 0.0f);  // Rotate about (1,0,0) x-axis [KHB]
+	else if (cube3axis == 'y' || 'Y')
+		glRotatef(angleCube3, 0.0f, 1.0f, 0.0f);  // Rotate about (0,1,0) y-axis [KHB] 
+	else if (cube3axis == 'z' || 'Z')
+		glRotatef(angleCube3, 0.0f, 0.0f, 1.0f);  // Rotate about (0,0,1) z-axis [KHB]
+	else
+		glRotatef(angleCube3, 0.0f, 0.0f, 1.0f);  // Base case rotate on z-axis [KHB] 
 
 											  //[KHB] 
 	glBegin(GL_QUADS);           // Begin drawing the color cube with 6 quads [KHB] 
@@ -230,6 +262,15 @@ int main(int argc, char** argv) {
 	glutCreateWindow(title);          // Create window with the given title
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
+
+	//Take user input for rotational axis information on each cube [KHB] 
+	cout << "Please enter x, y, or z for Cube #1: "; 
+	cin >> cube1axis; 
+	cout << "Please enter x, y, or z for Cube #2: "; 
+	cin >> cube2axis; 
+	cout << "Please enter x, y, or z for Cube #3: "; 
+	cin >> cube3axis; 
+
 	initGL();                       // Our own OpenGL initialization
 	glutTimerFunc(0, timer, 0);     // First timer call immediately [NEW]
 	glutMainLoop();                 // Enter the infinite event-processing loop
