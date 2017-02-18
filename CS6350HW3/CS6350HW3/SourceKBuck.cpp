@@ -5,9 +5,6 @@
 //Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
 //Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
 
-
-
-
 /*
 * OGL02Animation.cpp: 3D Shapes with animation
 */
@@ -45,7 +42,7 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
 
-	// CHANGES FOR CAMERA BUT DOESN"T WORK YET 
+	// CHANGES FOR CAMERA BUT DOESN"T WORK  
 	xp = 10*cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
 	yp = 0; 
 	zp = 10*sin(theta); 
@@ -55,7 +52,7 @@ void display() {
 	xu = 0; 
 	yu = 1; 
 	zu = 0; 
-	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu);
+	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu); 
 	theta += 10; 
 	// ENDS HERE 
 
