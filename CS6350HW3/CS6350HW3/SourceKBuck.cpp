@@ -22,10 +22,11 @@ char cube1axis = 'x'; // Cube 1 user axis choice [KHB]
 char cube2axis = 'y'; // Cube 2 user axis choice [KHB]
 char cube3axis = 'z'; // Cube 3 user axis choice [KHB]
 GLdouble xp, yp, zp, xd, yd, zd, xu, yu, zu; // for camera rotation [KHB] 
-float theta = 0.0; 
+float theta = 0.0; //[KHB] 
 int refreshMills = 15;        // refresh interval in milliseconds 
-GLfloat mat_amb[] = { 0.2, 0.4, 0.8, 1.0 }; //[KHB] ambient 
-GLfloat mat_dif[] = { 0.1, 0.3, 0.8, 1.0 }; //[KHB] diffuse 
+
+
+
 
 
 
@@ -45,23 +46,24 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_amb); //[KHB]
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif); //[KHB] 
 
-
+	
+									
 	// CHANGES FOR CAMERA BUT DOESN"T WORK  
-	xp = 10*cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
-	yp = 0; 
-	zp = 10*sin(theta); 
-	xd = -cos(theta); 
-	yd = 0; 
-	zd = -sin(theta); 
-	xu = 0; 
-	yu = 1; 
-	zu = 0; 
-	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu); 
-	theta += 10; 
+	xp = 10 * cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
+	yp = 0;
+	zp = 10 * sin(theta);
+	xd = -cos(theta);
+	yd = 0;
+	zd = -sin(theta);
+	xu = 0;
+	yu = 1;
+	zu = 0;
+	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu);
+	theta += 10;
 	// ENDS HERE 
+
+
 
 
 
@@ -299,14 +301,8 @@ int main(int argc, char** argv) {
 	glutInitWindowSize(1500, 700);   // Set the window's initial width & height [KHB] 
 	glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
 	glutCreateWindow(title);          // Create window with the given title 
-
-
-
-
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-
-
 
 
 	//Start rendering 
