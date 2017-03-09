@@ -1,6 +1,6 @@
 //Krizia Houston Buck 
-//CSCI 6350 Graphics HW 3
-//Due: 02/17/2017 
+//CSCI 6350 Graphics HW 4 ( HW 3 updated )
+//Due: 03/7/2017 
 
 //Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
 //Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
@@ -42,6 +42,7 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
 
+
 	// CHANGES FOR CAMERA BUT DOESN"T WORK  
 	xp = 10*cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
 	yp = 0; 
@@ -56,7 +57,9 @@ void display() {
 	theta += 10; 
 	// ENDS HERE 
 
-									// Render a color-cube consisting of 6 quads with different colors
+
+
+	// Render a color-cube consisting of 6 quads with different colors
 	glLoadIdentity();                 // Reset the model-view matrix
 	glTranslatef(-3.0f, 0.0f, -10.0f);  // Left most cube [KHB]
 
@@ -73,49 +76,49 @@ void display() {
 	glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
 									  // Top face (y = 1.0f)
 									  // Define vertices in counter-clockwise (CCW) order with normal pointing out
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glColor3f(0.2f, 1.0f, 0.2f);     //[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 
 	// Bottom face (y = -1.0f)
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	glColor3f(0.0f, 0.5f, 0.0f);//[KHB] 
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 
 	// Front face  (z = 1.0f)
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+	glColor3f(1.0f, 0.5f, 0.0f); //[KHB] 
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 
 	// Back face (z = -1.0f)
-	glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+	glColor3f(0.5f, 1.0f, 0.0f);  //[KHB] 
 	glVertex3f(1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, -1.0f);
 
 	// Left face (x = -1.0f)
-	glColor3f(0.0f, 0.0f, 1.0f);     // Blue
+	glColor3f(0.0f, 0.0f, 1.0f);//[KHB] 
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 
 	// Right face (x = 1.0f)
-	glColor3f(1.0f, 0.0f, 1.0f);     // Magenta
+	glColor3f(0.5f, 0.5f, 0.5f);//[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 	glEnd();  // End of drawing color-cube
 
-			  // Render another cube
+	// Render another cube
 	glLoadIdentity();                  // Reset the model-view matrix
 	glTranslatef(0.0f, 0.0f, -10.0f);  // center cube [KHB] 
 
@@ -133,49 +136,49 @@ void display() {
 	glBegin(GL_QUADS);           // Begin drawing the color cube with 6 quads [KHB] 
 									  // Top face (y = 1.0f)
 									  // Define vertices in counter-clockwise (CCW) order with normal pointing out
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glColor3f(0.0f, 1.0f, 0.0f); //[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 
 	// Bottom face (y = -1.0f)
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	glColor3f(1.0f, 0.8f, 1.0f); //[KHB] 
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 
 	// Front face  (z = 1.0f)
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+	glColor3f(1.0f, 0.2f, 0.2f); //[KHB] 
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 
 	// Back face (z = -1.0f)
-	glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+	glColor3f(1.0f, 1.0f, 0.5f); //[KHB] 
 	glVertex3f(1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, -1.0f);
 
 	// Left face (x = -1.0f)
-	glColor3f(0.0f, 0.0f, 1.0f);     // Blue
+	glColor3f(0.0f, 0.0f, 1.0f); //[KHB] 
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 
 	// Right face (x = 1.0f)
-	glColor3f(1.0f, 0.0f, 1.0f);     // Magenta
+	glColor3f(1.0f, 0.5f, 1.0f); //[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 	glEnd();  // End of drawing color-cube
 
-			  // Render a third cube
+	// Render a third cube
 	glLoadIdentity();                  // Reset the model-view matrix
 	glTranslatef(3.0f, 0.0f, -10.0f);  // right most cube [KHB] 
 
@@ -193,42 +196,42 @@ void display() {
 	glBegin(GL_QUADS);           // Begin drawing the color cube with 6 quads [KHB] 
 								 // Top face (y = 1.0f)
 								 // Define vertices in counter-clockwise (CCW) order with normal pointing out
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glColor3f(0.2f, 0.2f, 0.4f);    //[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 
 	// Bottom face (y = -1.0f)
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	glColor3f(1.0f, 0.5f, 0.3f);     //[KHB] 
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 
 	// Front face  (z = 1.0f)
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+	glColor3f(1.0f, 0.1f, 0.7f);     //[KHB] 
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
 
 	// Back face (z = -1.0f)
-	glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+	glColor3f(1.0f, 1.0f, 0.6f);     //[KHB] 
 	glVertex3f(1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, -1.0f);
 
 	// Left face (x = -1.0f)
-	glColor3f(0.0f, 0.0f, 1.0f);     // Blue
+	glColor3f(0.3f, 0.3f, 1.0f);     //[KHB] 
 	glVertex3f(-1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
 
 	// Right face (x = 1.0f)
-	glColor3f(1.0f, 0.0f, 1.0f);     // Magenta
+	glColor3f(1.0f, 0.2f, 1.0f);     //[KHB] 
 	glVertex3f(1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(1.0f, -1.0f, 1.0f);
@@ -238,13 +241,15 @@ void display() {
 
 	glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 
-						// Update the rotational angle after each refresh [NEW]
+	
+						
+	// Update the rotational angle after each refresh [KHB] 
 	angleCube1 += 0.2f;
 	angleCube2 -= 0.15f;
 	angleCube3 += 0.1f; 
 }
 
-/* Called back when timer expired [NEW] */
+/* Called back when timer expired //[KHB]  */
 void timer(int value) {
 	glutPostRedisplay();      // Post re-paint request to activate display()
 	glutTimerFunc(refreshMills, timer, 0); // next timer call milliseconds later
@@ -252,13 +257,15 @@ void timer(int value) {
 
 /* Handler for window re-size event. Called back when the window first appears and
 whenever the window is re-sized with its new width and height */
-void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
+void reshape(GLsizei w, GLsizei h) {  // GLsizei for non-negative integer
 											   // Compute aspect ratio of the new window
-	if (height == 0) height = 1;                // To prevent divide by 0
-	GLfloat aspect = (GLfloat)width / (GLfloat)height;
+	if (h == 0) 
+		h = 1;                // To prevent divide by 0
+
+	GLfloat aspect = (GLfloat)w / (GLfloat)h;
 
 	// Set the viewport to cover the new window
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, w, h);
 
 	// Set the aspect ratio of the clipping volume to match the viewport
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
@@ -271,11 +278,13 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);            // Initialize GLUT
 	glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
-	glutInitWindowSize(1500, 700);   // Set the window's initial width & height
+	glutInitWindowSize(1500, 700);   // Set the window's initial width & height [KHB] 
 	glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
 	glutCreateWindow(title);          // Create window with the given title
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
+
+
 
 	//Take user input for rotational axis information on each cube [KHB] 
 	cout << "Please enter x, y, or z for Cube #1: "; 
@@ -286,7 +295,7 @@ int main(int argc, char** argv) {
 	cin >> cube3axis; 
 
 	initGL();                       // Our own OpenGL initialization
-	glutTimerFunc(0, timer, 0);     // First timer call immediately [NEW]
+	glutTimerFunc(0, timer, 0);     // First timer call immediately [KHB] 
 	glutMainLoop();                 // Enter the infinite event-processing loop
 	return 0;
 }
