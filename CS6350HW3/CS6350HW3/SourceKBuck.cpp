@@ -24,6 +24,10 @@ char cube3axis = 'z'; // Cube 3 user axis choice [KHB]
 GLdouble xp, yp, zp, xd, yd, zd, xu, yu, zu; // for camera rotation [KHB] 
 float theta = 0.0; 
 int refreshMills = 15;        // refresh interval in milliseconds 
+GLfloat mat_amb[] = { 0.2, 0.4, 0.8, 1.0 }; //[KHB] ambient 
+GLfloat mat_dif[] = { 0.1, 0.3, 0.8, 1.0 }; //[KHB] diffuse 
+
+
 
 							  /* Initialize OpenGL Graphics */
 void initGL() {
@@ -41,6 +45,8 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_amb); //[KHB]
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_dif); //[KHB] 
 
 
 	// CHANGES FOR CAMERA BUT DOESN"T WORK  
@@ -276,15 +282,6 @@ void reshape(GLsizei w, GLsizei h) {  // GLsizei for non-negative integer
 
 /* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
-	glutInit(&argc, argv);            // Initialize GLUT
-	glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
-	glutInitWindowSize(1500, 700);   // Set the window's initial width & height [KHB] 
-	glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
-	glutCreateWindow(title);          // Create window with the given title
-	glutDisplayFunc(display);       // Register callback handler for window re-paint event
-	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-
-
 
 	//Take user input for rotational axis information on each cube [KHB] 
 	cout << "Please enter x, y, or z for Cube #1: "; 
@@ -294,6 +291,25 @@ int main(int argc, char** argv) {
 	cout << "Please enter x, y, or z for Cube #3: "; 
 	cin >> cube3axis; 
 
+
+
+	//Initialize after taking in axis choices for all three cubes 
+	glutInit(&argc, argv);            // Initialize GLUT
+	glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
+	glutInitWindowSize(1500, 700);   // Set the window's initial width & height [KHB] 
+	glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
+	glutCreateWindow(title);          // Create window with the given title 
+
+
+
+
+	glutDisplayFunc(display);       // Register callback handler for window re-paint event
+	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
+
+
+
+
+	//Start rendering 
 	initGL();                       // Our own OpenGL initialization
 	glutTimerFunc(0, timer, 0);     // First timer call immediately [KHB] 
 	glutMainLoop();                 // Enter the infinite event-processing loop
