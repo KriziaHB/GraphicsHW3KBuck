@@ -1,6 +1,6 @@
 //Krizia Houston Buck 
 //CSCI 6350 Graphics HW 4 ( HW 3 updated )
-//Due: 03/7/2017 
+//Due: 03/9/2017 
 
 //Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
 //Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
@@ -10,7 +10,12 @@
 */
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
+#include <glm/vec3.hpp> // glm::vec3
+#include <glm/vec4.hpp> // glm::vec4
+#include <glm/mat4x4.hpp> // glm::mat4
+#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <iostream> 
+#include <Camera.h> //[KHB] new from class code 
 using namespace std; 
 
 /* Global variables */
@@ -25,7 +30,12 @@ GLdouble xp, yp, zp, xd, yd, zd, xu, yu, zu; // for camera rotation [KHB]
 float theta = 0.0; //[KHB] 
 int refreshMills = 15;        // refresh interval in milliseconds 
 
-
+struct Light { //Tom Dalling 
+	glm::vec3 position;
+	glm::vec3 intensities;
+	float attenuation; //new this article
+	float ambientCoefficient; //new this article
+};
 
 
 
@@ -47,7 +57,7 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
 
-	
+
 									
 	// CHANGES FOR CAMERA BUT DOESN"T WORK  
 	xp = 10 * cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
@@ -61,9 +71,68 @@ void display() {
 	zu = 0;
 	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu);
 	theta += 10;
-	// ENDS HERE 
+	//CAMERA ENDS HERE 
+	//LIGHT 
+	/*
+	#version 150
+
+uniform mat4 model;
+uniform vec3 cameraPosition;
+
+// material settings
+uniform sampler2D materialTex;
+uniform float materialShininess;
+uniform vec3 materialSpecularColor;
+
+uniform struct Light {
+   vec3 position;
+   vec3 intensities; //a.k.a the color of the light
+   float attenuation;
+   float ambientCoefficient;
+} light;
+
+in vec2 fragTexCoord;
+in vec3 fragNormal;
+in vec3 fragVert;
+
+out vec4 finalColor;
+
+void main() {
+    vec3 normal = normalize(transpose(inverse(mat3(model))) * fragNormal);
+    vec3 surfacePos = vec3(model * vec4(fragVert, 1));
+    vec4 surfaceColor = texture(materialTex, fragTexCoord);
+    vec3 surfaceToLight = normalize(light.position - surfacePos);
+    vec3 surfaceToCamera = normalize(cameraPosition - surfacePos);
+    
+    //ambient
+    vec3 ambient = light.ambientCoefficient * surfaceColor.rgb * light.intensities;
+
+    //diffuse
+    float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
+    vec3 diffuse = diffuseCoefficient * surfaceColor.rgb * light.intensities;
+    
+    //specular
+    float specularCoefficient = 0.0;
+    if(diffuseCoefficient > 0.0)
+        specularCoefficient = pow(max(0.0, dot(surfaceToCamera, reflect(-surfaceToLight, normal))), materialShininess);
+    vec3 specular = specularCoefficient * materialSpecularColor * light.intensities;
+    
+    //attenuation
+    float distanceToLight = length(light.position - surfacePos);
+    float attenuation = 1.0 / (1.0 + light.attenuation * pow(distanceToLight, 2));
+
+    //linear color (color before gamma correction)
+    vec3 linearColor = ambient + attenuation*(diffuse + specular);
+    
+    //final color (after gamma correction)
+    vec3 gamma = vec3(1.0/2.2);
+    finalColor = vec4(pow(linearColor, gamma), surfaceColor.a);
+}
 
 
+
+	*/
+	//LIGHT ENDS HERE 
 
 
 
@@ -252,9 +321,9 @@ void display() {
 	
 						
 	// Update the rotational angle after each refresh [KHB] 
-	angleCube1 += 0.2f;
+	angleCube1 += 0.3f;
 	angleCube2 -= 0.15f;
-	angleCube3 += 0.1f; 
+	angleCube3 += 0.4f; 
 }
 
 /* Called back when timer expired //[KHB]  */
