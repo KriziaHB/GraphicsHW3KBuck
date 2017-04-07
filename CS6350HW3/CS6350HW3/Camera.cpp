@@ -8,6 +8,7 @@
 #include <iostream> 
 #include <fstream> 
 #include <string> 
+#include <vector> 
 #include <math.h> 
 #include <glm/glm.hpp> 
 #include <glm/vec3.hpp> 
