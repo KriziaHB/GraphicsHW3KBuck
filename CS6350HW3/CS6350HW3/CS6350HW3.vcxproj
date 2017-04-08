@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,7 +106,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,7 +125,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,7 +146,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,30 +163,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="common.hpp" />
-    <ClInclude Include="exponential.hpp" />
-    <ClInclude Include="ext.hpp" />
-    <ClInclude Include="fwd.hpp" />
-    <ClInclude Include="geometric.hpp" />
-    <ClInclude Include="glm.hpp" />
-    <ClInclude Include="integer.hpp" />
-    <ClInclude Include="mat2x2.hpp" />
-    <ClInclude Include="mat2x3.hpp" />
-    <ClInclude Include="mat2x4.hpp" />
-    <ClInclude Include="mat3x2.hpp" />
-    <ClInclude Include="mat3x3.hpp" />
-    <ClInclude Include="mat3x4.hpp" />
-    <ClInclude Include="mat4x2.hpp" />
-    <ClInclude Include="mat4x3.hpp" />
-    <ClInclude Include="mat4x4.hpp" />
-    <ClInclude Include="matrix.hpp" />
-    <ClInclude Include="packing.hpp" />
+    <ClInclude Include="Camera2.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="trigonometric.hpp" />
-    <ClInclude Include="vec2.hpp" />
-    <ClInclude Include="vec3.hpp" />
-    <ClInclude Include="vec4.hpp" />
-    <ClInclude Include="vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lamp.frag" />
