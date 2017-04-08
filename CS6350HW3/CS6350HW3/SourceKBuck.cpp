@@ -1,6 +1,6 @@
 //Krizia Houston Buck 
-//CSCI 6350 Graphics HW 4 ( HW 3 updated )
-//Due: 03/9/2017 
+//CSCI 6350 Graphics HW 4 / Project ( HW 3 updated )
+//Due: 04/14/2017 
 
 //Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
 //Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
@@ -8,6 +8,7 @@
 /*
 * OGL02Animation.cpp: 3D Shapes with animation
 */
+#include <GL/glew.h> 
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include <glm/vec3.hpp> // glm::vec3
@@ -15,9 +16,12 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <iostream> 
-#include "Camera.h" //[KHB] new from class code 
+#include <glm/ext.hpp> 
+//#include "Camera.h" //[KHB] new from class code 
 
 #include "Shader.h" //from Mustafa 
+//#include "Camera2.h" //from Mustafa 
+
 using namespace std; 
 
 /* Global variables */

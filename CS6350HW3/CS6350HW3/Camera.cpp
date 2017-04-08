@@ -2,21 +2,9 @@
 //from in class code 
 
 #include "Camera.h" 
-#include <GL/glew.h> 
-#include <include/GLFW/glfw3.h> 
-#include <stdio.h> 
-#include <iostream> 
-#include <fstream> 
-#include <string> 
-#include <vector> 
-#include <math.h> 
-#include <glm/glm.hpp> 
-#include <glm/vec3.hpp> 
-#include <glm/vec4.hpp> 
-#include <glm/mat4x4.hpp> 
-#include <glm/gtc/type_ptr.hpp> 
-#include <vector> 
 using namespace std; 
+
+/*
 
 Camera::Camera(CameraType cameraType, glm::mat4 projectionMatrix):cameraType(cameraType), mProjection(projectionMatrix) {
 	cameraPosition = glm::vec3(0.0f, 0.0f, 1.0f); 
@@ -91,3 +79,4 @@ void Camera::lookAt(glm::vec3& point) {
 glm::vec3 Camera::windowToWorld(glm::vec3 winCoord, glm::vec4 viewPort) {
 	return glm::unProject(winCoord, mView, mProjection, viewPort); 
 }
+*/
