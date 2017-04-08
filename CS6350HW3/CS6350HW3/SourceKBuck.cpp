@@ -20,7 +20,7 @@
 //#include "Camera.h" //[KHB] new from class code 
 
 #include "Shader.h" //from Mustafa 
-//#include "Camera2.h" //from Mustafa 
+#include "Camera2.h" //from Mustafa 
 
 using namespace std; 
 
