@@ -2,13 +2,16 @@
 //CSCI 6350 Graphics HW 4 / Project ( HW 3 updated )
 //Due: 04/14/2017 
 
+
 //Video on setting up OpenGL: https://www.youtube.com/watch?v=8p76pJsUP44
 //Tutorial for rotating cubes: https://www.ntu.edu.sg/home/ehchua/programming/opengl/CG_Examples.html
 
 /*
 * OGL02Animation.cpp: 3D Shapes with animation
 */
+/*
 #include <GL/glew.h> 
+#include <GLFW/glfw3.h> //from Mustafa 
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include <glm/vec3.hpp> // glm::vec3
@@ -16,6 +19,9 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <iostream> 
+#include <vector> 
+#include <cstdlib> 
+#include <ctime> 
 #include <glm/ext.hpp> 
 //#include "Camera.h" //[KHB] new from class code 
 
@@ -24,7 +30,7 @@
 
 using namespace std; 
 
-/* Global variables */
+// Global variables 
 char title[] = "3 Cubes Rotating on an Axis with Camera Movement ";
 GLfloat angleCube1 = 0.0f;  // Rotational angle for cube [KHB] 
 GLfloat angleCube2 = 0.0f;  // Rotational angle for cube [KHB] 
@@ -36,17 +42,32 @@ GLdouble xp, yp, zp, xd, yd, zd, xu, yu, zu; // for camera rotation [KHB]
 float theta = 0.0; //[KHB] 
 int refreshMills = 15;        // refresh interval in milliseconds 
 
-struct Light { //Tom Dalling 
-	glm::vec3 position;
-	glm::vec3 intensities;
-	float attenuation; //new this article
-	float ambientCoefficient; //new this article
-};
+// [KHB] tried in HW4 
+//struct Light { //Tom Dalling 
+//	glm::vec3 position;
+//	glm::vec3 intensities;
+//	float attenuation; //new this article
+//	float ambientCoefficient; //new this article
+//}; 
+
+
+//[KHB] For Project from Mustafa's example 
+Camera2 CAMERA(glm::vec3(0.0f, 2.0f, 10.0f)); 
+glm::vec3 lightPos(0.0f, 0.0f, 5.0f); 
+glm::vec3 lightColor(1.0f, 1.0f, 1.0f); 
+GLfloat deltaTime = 0.0f; 
 
 
 
 
-							  /* Initialize OpenGL Graphics */
+
+
+
+
+
+
+
+							  // Initialize OpenGL Graphics 
 void initGL() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	glClearDepth(1.0f);                   // Set background depth to farthest
@@ -54,17 +75,28 @@ void initGL() {
 	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+
+	//Mustafa 
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+//	Shader shader("shader.vert", "shader.frag"); 
+//	Shader lamp("lamp.vert", "lamp.frag"); 
+//	GLuint VBO, VAO; 
+//	glGenVertexArrays(1, &VAO); 
+//	glGenBuffers(1, &VBO); 
+//	glBindBuffer(GL_ARRAY_BUFFER, VBO); 
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); 
+//	glBindVertexArray(VAO); 
 }
 
-/* Handler for window-repaint event. Called back when the window first appears and
-whenever the window needs to be re-painted. */
+// Handler for window-repaint event. Called back when the window first appears and whenever the window needs to be re-painted. 
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
 	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
 
 
-									
+	/*								
 	// CHANGES FOR CAMERA BUT DOESN"T WORK  
 	xp = 10 * cos(theta); // ray is the distance from the origin and theta is the current angle [KHB]
 	yp = 0;
@@ -78,6 +110,7 @@ void display() {
 	gluLookAt(xp, yp, zp, xd, yd, zd, xu, yu, zu);
 	theta += 10;
 	//CAMERA ENDS HERE 
+	*/
 	//LIGHT 
 	/*
 	#version 150
@@ -140,7 +173,7 @@ void main() {
 	*/
 	//LIGHT ENDS HERE 
 
-
+/*
 
 	// Render a color-cube consisting of 6 quads with different colors
 	glLoadIdentity();                 // Reset the model-view matrix
@@ -332,14 +365,13 @@ void main() {
 	angleCube3 += 0.4f; 
 }
 
-/* Called back when timer expired //[KHB]  */
+// Called back when timer expired //[KHB]  
 void timer(int value) {
 	glutPostRedisplay();      // Post re-paint request to activate display()
 	glutTimerFunc(refreshMills, timer, 0); // next timer call milliseconds later
 }
 
-/* Handler for window re-size event. Called back when the window first appears and
-whenever the window is re-sized with its new width and height */
+// Handler for window re-size event. Called back when the window first appears and whenever the window is re-sized with its new width and height 
 void reshape(GLsizei w, GLsizei h) {  // GLsizei for non-negative integer
 											   // Compute aspect ratio of the new window
 	if (h == 0) 
@@ -357,7 +389,7 @@ void reshape(GLsizei w, GLsizei h) {  // GLsizei for non-negative integer
 	gluPerspective(45.0f, aspect, 0.1f, 100.0f);
 }
 
-/* Main function: GLUT runs as a console application starting at main() */
+// Main function: GLUT runs as a console application starting at main() 
 int main(int argc, char** argv) {
 
 	//Take user input for rotational axis information on each cube [KHB] 
@@ -379,10 +411,19 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);       // Register callback handler for window re-paint event
 	glutReshapeFunc(reshape);       // Register callback handler for window re-size event
 
+	
+	//[KHB] GLFW additions from Mustafa 
+//	glfwInit(); 
+//	GLFWwindow* wind = glfwCreateWindow(1500, 700, "GLFW window", glfwGetPrimaryMonitor(), NULL); 
+//	glfwMakeContextCurrent(wind); 
+//	glewExperimental = GL_TRUE; 
+//	glewInit(); 
+	
 
-	//Start rendering 
+
+	//Start rendering GLUT portion 
 	initGL();                       // Our own OpenGL initialization
 	glutTimerFunc(0, timer, 0);     // First timer call immediately [KHB] 
 	glutMainLoop();                 // Enter the infinite event-processing loop
 	return 0;
-}
+} */

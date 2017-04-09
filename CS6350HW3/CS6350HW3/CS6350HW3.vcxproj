@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;C:\Users\buckkr\Documents\glfw-3.2.1\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,7 +106,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;C:\Users\buckkr\Documents\glfw-3.2.1\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,7 +125,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;C:\Users\buckkr\Documents\glfw-3.2.1\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,7 +146,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\buckkr\Documents\Glew and Glut\glew-1.11.0\include;C:\Users\buckkr\Documents\Glew and Glut\freeglut\include;C:\Users\buckkr\Downloads\glm-master\glm-master;C:\Users\buckkr\Downloads\glfw-master\glfw-master;C:\Users\buckkr\Documents\glfw-3.2.1\glfw-3.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Mustafa.cpp" />
     <ClCompile Include="SourceKBuck.cpp" />
   </ItemGroup>
   <ItemGroup>
