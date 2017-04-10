@@ -1,6 +1,6 @@
 //Krizia Houston Buck 
 //From in class code 
-
+/*
 #pragma once 
 #include <GL/glew.h> 
 #include <include/GLFW/glfw3.h> 
@@ -43,3 +43,4 @@ private:
 	CameraType cameraType; 
 };
 
+*/

@@ -1,10 +1,10 @@
 #pragma once
 
 //GL Includes 
-#include <GL/glew.h> 
-#include <glm/glm.hpp> 
-#include <glm/gtc/matrix_transform.hpp> 
-#include <glm/gtx/quaternion.hpp> 
+#include <gl\glew.h> 
+#include <glm/glm/glm.hpp> 
+#include <glm/glm/gtc/matrix_transform.hpp> 
+#include <glm/glm/gtx/quaternion.hpp> 
 //Std. includes 
 #include <vector> 
 

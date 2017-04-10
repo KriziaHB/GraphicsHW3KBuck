@@ -6,12 +6,12 @@
 #include <vector> 
 #include <cstdlib> 
 #include <ctime> 
-#include <GL/glew.h> 
+#include <C:\Users\buckkr\Documents\glfw-3.2.1\LIB files\headers\GL\glew.h> 
 #include <GLFW/glfw3.h> 
-#include <glm/glm.hpp> 
-#include <glm/gtc/matrix_transform.hpp> 
-#include <glm/gtc/type_ptr.hpp> 
-#include <glm/ext.hpp> 
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/matrix_transform.hpp>
+#include <glm/glm/gtc/type_ptr.hpp> 
+#include <glm/glm/ext.hpp> 
 
 #include "Camera2.h" 
 #include "Shader.h" 
@@ -42,7 +42,7 @@ int main() {
 		std::cerr << "ERROR: could not start GLFW3 \n";
 		return 1;
 	}
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Graphics Window", glfwGetPrimaryMonitor(), NULL);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Graphics Window", NULL, NULL);
 	if (!window) {
 		std::cerr << "ERROR: Could not open window with GLFW3 \n";
 		glfwTerminate();
@@ -50,11 +50,11 @@ int main() {
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetKeyCallback(window, key_callback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPos(window, 0, 0);
-	glfwSetCursorPos(window, lastX, lastY);
+//	glfwSetCursorPosCallback(window, mouse_callback);
+//	glfwSetKeyCallback(window, key_callback);
+//	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//	glfwSetCursorPos(window, 0, 0);
+//	glfwSetCursorPos(window, lastX, lastY);
 	glewExperimental = GL_TRUE;
 	glewInit();
 	//get version info 
