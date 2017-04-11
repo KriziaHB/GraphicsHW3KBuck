@@ -207,20 +207,20 @@ int main() {
 		camY = 0.0f;
 //		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  //* (-camAngle); 
 		//Changes for X and Z to keep steady path around the origin
-		if (camX == 0.0f)
-			camX = 0.1f; 
-		if (camX >= 8.5f)
+		if (camX >= 12.0f)
 			direction = -1.0f;
-		else if (camX <= -8.50f)
+		else if (camX <= -12.0f)
 			direction = 1.0f;
-		if ((camX < 8.5f) && (camX >= 0.0f) && (direction == -1.0f)) //quadrant x-, z+
+		if ((camX < 12.0f) && (camX > 0.0f) && (direction == -1.0f)) //quadrant x-, z+
 			camZ = sqrt(144 - (camX * camX));
-		else if ((camX < 0.0f) && (camX > -8.5f) && (direction == -1.0f)) //quadrant x-, z-
+		else if ((camX > -12.0f) && (camX < 0.0f) && (direction == -1.0f)) //quadrant x-, z-
 			camZ = sqrt(144 - (camX * camX));
-		else if ((camX > -8.5f) && (camX < 0.0f) && (direction == 1.0f)) //quadrant x+, z-
+		else if ((camX > -12.0f) && (camX < 0.0f) && (direction == 1.0f)) //quadrant x+, z-
 			camZ = -(sqrt(144 - (camX * camX)));
-		else if ((camX < -8.5f) && (camX > 0.0f) && (direction == 1.0f)) //quadrant x+, z+ 
+		else if ((camX < 12.0f) && (camX > 0.0f) && (direction == 1.0f)) //quadrant x+, z+ 
 			camZ = -(sqrt(144 - (camX * camX)));
+		else
+			camZ += 0.01f; 
 //		cam.Position = glm::vec3(0.0f, 0.0f, 0.0f);
 		cam.Position = glm::vec3(camX, camY, camZ); 
 
