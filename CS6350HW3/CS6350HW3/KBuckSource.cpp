@@ -3,6 +3,8 @@
 //Project due: 4/14/2017
 
 #include <iostream> 
+#include <fstream> 
+#include <sstream> 
 #include <vector> 
 #include <cstdlib> 
 #include <ctime> 
@@ -13,14 +15,15 @@
 #include <glm/glm/gtc/type_ptr.hpp> 
 #include <glm/glm/ext.hpp> 
 
-#include "Camera2.h" 
-#include "Shader.h" 
+#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
+//#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Shader.h"
 //[KHB] nto using textures 
 //#include "Texture.h" 
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void doMovement();
+GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path); 
 
 const GLuint WIDTH = 1280;
 const GLuint HEIGHT = 720; //720p 
@@ -68,8 +71,11 @@ int main() {
 	glDepthFunc(GL_LESS);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	Shader shader("shader.vert", "shader.frag");
-	Shader lamp("lamp.vert", "lamp.frag");
+//	Shader shader("shader.vert", "shader.frag");
+//	Shader lamp("lamp.vert", "lamp.frag");
+	//use the added function to get the programID  
+	GLuint pid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderFragment.hlsl");
+	GLuint lampid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampFragment.hlsl");
 
 	GLfloat vertices[] = { // U V is for texture 
 		//		X Y Z			U V				Normal 
@@ -192,7 +198,7 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//[KHB] 
-		glLoadIdentity();
+	//	glLoadIdentity();
 
 		//constant rotation 
 		lightAngle += 0.001f;
@@ -203,11 +209,11 @@ int main() {
 		//rotate things 
 		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
 		// [KHB] 12 radius, opposite direction as light 
-//		camX += (direction * 0.01f);					//* (-camAngle); 
+		camX += (direction * 0.01f);					//* (-camAngle); 
 		camY = 0.0f;
 //		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  //* (-camAngle); 
 		//Changes for X and Z to keep steady path around the origin
-/*		if (camX >= 12.0f)
+		if (camX >= 12.0f) 
 			direction = -1.0f;
 		else if (camX <= -12.0f)
 			direction = 1.0f;
@@ -221,10 +227,10 @@ int main() {
 			camZ = -(sqrt(144 - (camX * camX)));
 		else
 			camZ += 0.01f; 
-			*/
+			
 //		cam.Position = glm::vec3(0.0f, 0.0f, 0.0f);
-		camX = 0.0f; 
-		camZ = 10.0f; 
+//		camX = 0.0f; 
+//		camZ = 10.0f; 
 		cam.Position = glm::vec3(camX, camY, camZ); 
 
 
@@ -238,20 +244,21 @@ int main() {
 		// [KHB] 4 radius, 4 height for circular movement 
 		lightPos = glm::vec3(4.0f*glm::cos(lightAngle), 4.0 * glm::sin(lightAngle * 3), 4.0f*glm::sin(lightAngle)); 
 
-		shader.useShader();
+		//shader.useShader();
 //		glm::mat4 view;
 		glm::mat4 projection;
 //		view = cam.GetViewMatrix();
 		projection = glm::perspective(1.0f, (float)WIDTH / (float)HEIGHT, 0.1f, 1000.0f);
 
-		GLint modelLoc = glGetUniformLocation(shader.Program, "model");
-		GLint viewLoc = glGetUniformLocation(shader.Program, "view");
-		GLint projLoc = glGetUniformLocation(shader.Program, "projection");
-		GLint lightPosLoc = glGetUniformLocation(shader.Program, "lightPosition");
-		GLint lightColorLoc = glGetUniformLocation(shader.Program, "lightColor");
-		GLint camPosLoc = glGetUniformLocation(shader.Program, "camPos");
-		GLint cubeColorLoc = glGetUniformLocation(shader.Program, "cubeColor");
-		GLint revertLoc = glGetUniformLocation(shader.Program, "revertNormals"); //use for the biggest cube 
+		//Change all shader.Program to pid COME BACK HERE 
+		GLint modelLoc = glGetUniformLocation(pid, "model");
+		GLint viewLoc = glGetUniformLocation(pid, "view");
+		GLint projLoc = glGetUniformLocation(pid, "projection");
+		GLint lightPosLoc = glGetUniformLocation(pid, "lightPosition");
+		GLint lightColorLoc = glGetUniformLocation(pid, "lightColor");
+		GLint camPosLoc = glGetUniformLocation(pid, "camPos");
+		GLint cubeColorLoc = glGetUniformLocation(pid, "cubeColor");
+		GLint revertLoc = glGetUniformLocation(pid, "revertNormals"); //use for the biggest cube 
 
 																				 //set to GPU 
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
@@ -273,7 +280,7 @@ int main() {
 			//textures[i].useTexture(shader, "theTexture"); 
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			//[KHB] 
-			glColor3f(0, 1, 0); 
+	//		glColor3f(0, 1, 0); 
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
@@ -281,23 +288,26 @@ int main() {
 		  //[KHB] not using the biggest cube / room 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
-			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
+			model = glm::scale(model, glm::vec3(15.0f, 15.0f, 15.0f));
 			glUniform1i(revertLoc, 1);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	//		textures[0].useTexture(shader, "theTexture");
 	//		glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
 			//[KHB] 
-			glColor3f(0.2, 0.2, 0);
+	//		glColor3f(0.2, 0.2, 0);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		} 
 
 		{ // light visualization 
-			lamp.useShader();
-			modelLoc = glGetUniformLocation(lamp.Program, "model");
-			viewLoc = glGetUniformLocation(lamp.Program, "view");
-			projLoc = glGetUniformLocation(lamp.Program, "projection");
-			cubeColorLoc = glGetUniformLocation(lamp.Program, "colorChanged");
+	//		lamp.useShader();
+
+	//	Shader lamp("lamp.vert", "lamp.frag");
+	//use the added function to get the programID  
+			modelLoc = glGetUniformLocation(lampid, "model");
+			viewLoc = glGetUniformLocation(lampid, "view");
+			projLoc = glGetUniformLocation(lampid, "projection");
+			cubeColorLoc = glGetUniformLocation(lampid, "colorChanged");
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 			glUniform3f(cubeColorLoc, lightColor.x, lightColor.y, lightColor.z);
@@ -388,3 +398,102 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	*/
 }
+
+
+GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path) {
+
+	// Create the shaders
+	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+	// Read the Vertex Shader code from the file
+	std::string VertexShaderCode;
+	std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
+	if (VertexShaderStream.is_open()) {
+		std::string Line = "";
+		while (getline(VertexShaderStream, Line))
+			VertexShaderCode += "\n" + Line;
+		VertexShaderStream.close();
+	}
+	else {
+		printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
+		getchar();
+		return 0;
+	}
+
+	// Read the Fragment Shader code from the file
+	std::string FragmentShaderCode;
+	std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
+	if (FragmentShaderStream.is_open()) {
+		std::string Line = "";
+		while (getline(FragmentShaderStream, Line))
+			FragmentShaderCode += "\n" + Line;
+		FragmentShaderStream.close();
+	}
+
+	GLint Result = GL_FALSE;
+	int InfoLogLength;
+
+
+	// Compile Vertex Shader
+	printf("Compiling shader : %s\n", vertex_file_path);
+	char const * VertexSourcePointer = VertexShaderCode.c_str();
+	glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
+	glCompileShader(VertexShaderID);
+
+	// Check Vertex Shader
+	glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
+		glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
+		printf("%s\n", &VertexShaderErrorMessage[0]);
+	}
+
+
+
+	// Compile Fragment Shader
+	printf("Compiling shader : %s\n", fragment_file_path);
+	char const * FragmentSourcePointer = FragmentShaderCode.c_str();
+	glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
+	glCompileShader(FragmentShaderID);
+
+	// Check Fragment Shader
+	glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
+		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+		printf("%s\n", &FragmentShaderErrorMessage[0]);
+	}
+
+
+
+	// Link the program
+	printf("Linking program\n");
+	GLuint ProgramID = glCreateProgram();
+	glAttachShader(ProgramID, VertexShaderID);
+	glAttachShader(ProgramID, FragmentShaderID);
+	glLinkProgram(ProgramID);
+
+	// Check the program
+	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	if (InfoLogLength > 0) {
+		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
+		glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+		printf("%s\n", &ProgramErrorMessage[0]);
+	}
+
+
+	glDetachShader(ProgramID, VertexShaderID);
+	glDetachShader(ProgramID, FragmentShaderID);
+
+	glDeleteShader(VertexShaderID);
+	glDeleteShader(FragmentShaderID);
+
+	return ProgramID;
+}
+
+
+

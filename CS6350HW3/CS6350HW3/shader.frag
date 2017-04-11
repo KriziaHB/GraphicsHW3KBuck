@@ -16,11 +16,12 @@ uniform sampler2D theTexture;
 void main () {
 
 	// 0.004f is attenuation constant 
-	//USE THIS ONE OR FIND ANOTHER ATTENUATION FORMULA 
-	vec3 lightAttenuated = lightColor * (1.0f / (1.0f + 0.004f * pow(distance(FragPos, lightPosition), 2.0f))); 
+	//USE THIS ONE OR FIND ANOTHER ATTENUATION FORMULA  
+	float c = 0.004f; 
+	vec3 lightAttenuated = lightColor * (1.0f / (1.0f + c * pow(distance(FragPos, lightPosition), 2.0f))); 
 	
 	//ambient 
-	float ambientStrength = 0.1f; 
+	float ambientStrength = 0.5f; //originally 0.1f; 
 	vec3 ambient = ambientStrength * lightColor; 
 
 	//diffuse 

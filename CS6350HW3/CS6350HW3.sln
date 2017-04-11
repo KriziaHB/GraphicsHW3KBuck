@@ -5,6 +5,14 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CS6350HW3", "CS6350HW3\CS6350HW3.vcxproj", "{B8384419-A3AA-4100-8546-631F26ABAD93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BF06D19-74FC-4AFE-BAD0-7FC3B03AD6A4}"
+	ProjectSection(SolutionItems) = preProject
+		LampFragment.hlsl = LampFragment.hlsl
+		LampVertex.hlsl = LampVertex.hlsl
+		ShaderFragment.hlsl = ShaderFragment.hlsl
+		ShaderVertex.hlsl = ShaderVertex.hlsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
