@@ -1,4 +1,4 @@
-//Krizia Houston Buck 
+//Krizia Houston Buck (x86)
 //Variation on Code presented in class by Mustafa Tunc 
 //Project due: 4/14/2017
 
@@ -50,6 +50,7 @@ int main() {
 	}
 
 	glfwMakeContextCurrent(window);
+	//[KHB] not using Mustafa's custom cursor 
 //	glfwSetCursorPosCallback(window, mouse_callback);
 //	glfwSetKeyCallback(window, key_callback);
 //	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -121,6 +122,15 @@ int main() {
 		0.5f, 0.5f, 0.5f,		0.0f, 1.0f,		1.0f, 0.0f, 0.0f
 	};
 
+
+	// [KHB] color for cubes 
+	static const GLfloat cube1_color[36] = { 0.5 }; 
+	static const GLfloat cube2_color[36] = { 0.2 }; 
+	static const GLfloat cube3_color[36] = { 0.8 }; 
+	static const GLfloat cube4_color[36] = { 0.1 }; 
+
+
+
 	//world space positions of cubes 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -145,8 +155,7 @@ int main() {
 	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 
-	// [KHB} not using textures 
-	/*
+	/* [KHB} not using textures 
 	std::vector<Texture> textures;
 	textures.push_back(Texture("1.png"));
 	textures.push_back(Texture("2.png"));
@@ -155,13 +164,22 @@ int main() {
 
 	//printf("Cam Position vec3(%f, %f, %f)", cam.getPosition().x, cam.getPosition().y, cam.getPosition().z); 
 	float lightAngle = 1.0f;
+	float camAngle = 1.0f; 
+	GLfloat camX = 0.0f; 
+	GLfloat camY = 8.0f; 
+	GLfloat camZ = 0.0f; 
+	float direction = 1.0f; //for euclidean distance for camera from origin 
 	GLfloat angle = 0.0f; //for rotating cubes 
 
-	rotationAlongAxis[0] = rotationAlongAxis[1] = rotationAlongAxis[2] = glm::vec3(0.0f, 1.0f, 1.0f);
+	//[KHB] all rotating on different axes 
+	rotationAlongAxis[0] = glm::vec3(0.5f, 1.0f, 0.0f); 
+	rotationAlongAxis[1] = glm::vec3(0.8f, 0.0f, 1.0f); 
+	rotationAlongAxis[2] = glm::vec3(-1.0f, 0.2f, 0.5f);
+
 	glm::vec3 cubeColorsForEach[3];
-	cubeColorsForEach[0] = glm::vec3(1, 0, 0);
+	cubeColorsForEach[0] = glm::vec3(1, 0, 1);
 	cubeColorsForEach[1] = glm::vec3(1, 1, 0);
-	cubeColorsForEach[2] = glm::vec3(0, 1, 0);
+	cubeColorsForEach[2] = glm::vec3(0, 1, 1);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -178,16 +196,49 @@ int main() {
 
 		//constant rotation 
 		lightAngle += 0.001f;
-		angle += 0.005f;
+		camAngle += 0.002f; 
+		angle += 0.005f; 
+		
 
 		//rotate things 
 		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
-		lightPos = glm::vec3(7.0f*glm::cos(lightAngle), 5 * glm::sin(lightAngle * 3), 7.0f*glm::sin(lightAngle)); //7 radius, 5 height for circular movement 
+		// [KHB] 12 radius, opposite direction as light 
+		camX += (direction * 0.01f);					//* (-camAngle); 
+		camY = 0.0f;
+//		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  //* (-camAngle); 
+		//Changes for X and Z to keep steady path around the origin
+		if (camX == 0.0f)
+			camX = 0.1f; 
+		if (camX >= 8.5f)
+			direction = -1.0f;
+		else if (camX <= -8.50f)
+			direction = 1.0f;
+		if ((camX < 8.5f) && (camX >= 0.0f) && (direction == -1.0f)) //quadrant x-, z+
+			camZ = sqrt(144 - (camX * camX));
+		else if ((camX < 0.0f) && (camX > -8.5f) && (direction == -1.0f)) //quadrant x-, z-
+			camZ = sqrt(144 - (camX * camX));
+		else if ((camX > -8.5f) && (camX < 0.0f) && (direction == 1.0f)) //quadrant x+, z-
+			camZ = -(sqrt(144 - (camX * camX)));
+		else if ((camX < -8.5f) && (camX > 0.0f) && (direction == 1.0f)) //quadrant x+, z+ 
+			camZ = -(sqrt(144 - (camX * camX)));
+//		cam.Position = glm::vec3(0.0f, 0.0f, 0.0f);
+		cam.Position = glm::vec3(camX, camY, camZ); 
+
+
+
+
+		//position, look at origin, up vector 
+		glm::mat4 view = glm::lookAt(cam.Position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+//		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)); 
+		// [KHB] 4 radius, 4 height for circular movement 
+		lightPos = glm::vec3(4.0f*glm::cos(lightAngle), 4.0 * glm::sin(lightAngle * 3), 4.0f*glm::sin(lightAngle)); 
 
 		shader.useShader();
-		glm::mat4 view;
+//		glm::mat4 view;
 		glm::mat4 projection;
-		view = cam.GetViewMatrix();
+//		view = cam.GetViewMatrix();
 		projection = glm::perspective(1.0f, (float)WIDTH / (float)HEIGHT, 0.1f, 1000.0f);
 
 		GLint modelLoc = glGetUniformLocation(shader.Program, "model");
@@ -218,20 +269,25 @@ int main() {
 			//[KHB] not using textures 
 			//textures[i].useTexture(shader, "theTexture"); 
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
+			//[KHB] 
+			glColor3f(0, 1, 0); 
+
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-/*		{ //the biggest cube 
+		{ //the biggest cube 
 		  //[KHB] not using the biggest cube / room 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
-			model = glm::scale(model, glm::vec3(25.0f, 25.0f, 25.0f));
+			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
 			glUniform1i(revertLoc, 1);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			textures[0].useTexture(shader, "theTexture");
-			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+	//		textures[0].useTexture(shader, "theTexture");
+	//		glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
+			//[KHB] 
+			glColor3f(0.2, 0.2, 0);
 
-		} */
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		} 
 
 		{ // light visualization 
 			lamp.useShader();

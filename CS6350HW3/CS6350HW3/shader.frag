@@ -40,12 +40,13 @@ void main () {
 	vec4 texCala = texture(theTexture, textureCoord); 
 	vec3 combinationOfColors; 
 
-	if (texCala.a < 0.1 || revertNormals == 1) {
+//[KHB] trying to get constant color
+//	if (texCala.a < 0.1 || revertNormals == 1) {
 		combinationOfColors = cubeColor; 
-	}
-	else {
-		combinationOfColors = texCala.rgb; 
-	}
+//	}
+//	else {
+//		combinationOfColors = texCala.rgb; 
+//	}
 
 	vec3 result = (ambient + lightAttenuated * (diffuse + specular)) * combinationOfColors; 
 	color = vec4(result, 1.0f); 
