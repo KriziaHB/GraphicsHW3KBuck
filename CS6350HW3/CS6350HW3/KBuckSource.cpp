@@ -203,11 +203,11 @@ int main() {
 		//rotate things 
 		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
 		// [KHB] 12 radius, opposite direction as light 
-		camX += (direction * 0.01f);					//* (-camAngle); 
+//		camX += (direction * 0.01f);					//* (-camAngle); 
 		camY = 0.0f;
 //		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  //* (-camAngle); 
 		//Changes for X and Z to keep steady path around the origin
-		if (camX >= 12.0f)
+/*		if (camX >= 12.0f)
 			direction = -1.0f;
 		else if (camX <= -12.0f)
 			direction = 1.0f;
@@ -221,7 +221,10 @@ int main() {
 			camZ = -(sqrt(144 - (camX * camX)));
 		else
 			camZ += 0.01f; 
+			*/
 //		cam.Position = glm::vec3(0.0f, 0.0f, 0.0f);
+		camX = 0.0f; 
+		camZ = 10.0f; 
 		cam.Position = glm::vec3(camX, camY, camZ); 
 
 
