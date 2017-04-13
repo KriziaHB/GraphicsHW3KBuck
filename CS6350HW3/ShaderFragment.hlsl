@@ -1,10 +1,9 @@
 //[KHB] previous shader.frag 
-
+//Removed texture 
 #version 330 core
 
 in vec3 FragPos;
 in vec3 Normal;
-in vec2 textureCoord;
 
 out vec4 color;
 uniform vec3 lightPosition;
@@ -22,7 +21,7 @@ void main() {
 	vec3 lightAttenuated = lightColor * (1.0f / (1.0f + 0.004f * pow(distance(FragPos, lightPosition), 2.0f)));
 
 	//ambient 
-	float ambientStrength = 0.5f; //originally 0.1f; 
+	float ambientStrength = 0.1f; //originally 0.1f; 
 	vec3 ambient = ambientStrength * lightColor;
 
 	//diffuse 
@@ -39,17 +38,6 @@ void main() {
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32); //32 == phong component 
 	vec3 specular = specularStrength * spec * lightColor;
 
-	vec4 texCala = texture(theTexture, textureCoord);
-	vec3 combinationOfColors;
-
-		if (texCala.a < 0.1 || revertNormals == 1) {
-			combinationOfColors = cubeColor;
-		}
-		else {
-			combinationOfColors = texCala.rgb; 
-		}
-
 	vec3 result = (ambient + lightAttenuated * (diffuse + specular)) * combinationOfColors;
 	color = vec4(result, 1.0f);
-
 }

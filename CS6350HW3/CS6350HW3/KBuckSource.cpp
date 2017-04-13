@@ -16,9 +16,7 @@
 #include <glm/glm/ext.hpp> 
 
 #include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
-//#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Shader.h"
-//[KHB] nto using textures 
-//#include "Texture.h" 
+using namespace std; 
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -36,11 +34,51 @@ GLfloat lastY = HEIGHT / 2;
 bool firstMouse = true;
 GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
-//[KHB] not using textures 
-//int Texture::xthTexture = 0;
 glm::vec3 rotationAlongAxis[3];
 
+//[KHB] User input choices for rotational axes 
+GLfloat x_1, y_1, z_1, x_2, y_2, z_2, x_3, y_3, z_3;
+
+//[KHB] test all user input to make sure the floats are between -1.0 and 1.0
+GLfloat inputCheck(GLfloat input) {
+	if ((input > 1.0f) || (input < -1.0f))
+		return 0.0f;
+	else
+		return input; 
+}
+
 int main() {
+
+	//[KHB] Take user input for rotational axis information on each cube 
+	GLfloat in = 0.0f; 
+	cout << "Please enter float values between -1.0 and 1.0 for x, y, and z separated by a space for Cube #1: "; 
+	cin >> in; 
+	x_1 = inputCheck(in); 
+	cin >> in; 
+	y_1 = inputCheck(in);
+	cin >> in; 
+	z_1 = inputCheck(in);
+	cout << "Please enter float values between 0.0 and 1.0 for x, y, and z separated by a space for Cube #2: ";
+	cin >> in;
+	x_2 = inputCheck(in);
+	cin >> in;
+	y_2 = inputCheck(in);
+	cin >> in;
+	z_2 = inputCheck(in);
+	cout << "Please enter float values between 0.0 and 1.0 for x, y, and z separated by a space for Cube #3: ";
+	cin >> in;
+	x_3 = inputCheck(in);
+	cin >> in;
+	y_3 = inputCheck(in);
+	cin >> in;
+	z_3 = inputCheck(in);
+
+	//[KHB] all rotating on different axes 
+	rotationAlongAxis[0] = glm::vec3(x_1, y_1, z_1);
+	rotationAlongAxis[1] = glm::vec3(x_2, y_2, z_2);
+	rotationAlongAxis[2] = glm::vec3(x_3, y_3, z_3);
+
+	//Initialize glfw and window (catch errors) 
 	if (!glfwInit()) {
 		std::cerr << "ERROR: could not start GLFW3 \n";
 		return 1;
@@ -161,11 +199,6 @@ int main() {
 	glEnableVertexAttribArray(2);
 	glBindVertexArray(0);
 
-	/* [KHB} not using textures 
-	std::vector<Texture> textures;
-	textures.push_back(Texture("1.png"));
-	textures.push_back(Texture("2.png"));
-	textures.push_back(Texture("3.png")); */
 
 
 	//printf("Cam Position vec3(%f, %f, %f)", cam.getPosition().x, cam.getPosition().y, cam.getPosition().z); 
@@ -177,10 +210,7 @@ int main() {
 	float direction = 1.0f; //for euclidean distance for camera from origin 
 	GLfloat angle = 0.0f; //for rotating cubes 
 
-	//[KHB] all rotating on different axes 
-	rotationAlongAxis[0] = glm::vec3(0.5f, 1.0f, 0.0f); 
-	rotationAlongAxis[1] = glm::vec3(0.8f, 0.0f, 1.0f); 
-	rotationAlongAxis[2] = glm::vec3(-1.0f, 0.2f, 0.5f);
+
 
 	glm::vec3 cubeColorsForEach[3];
 	cubeColorsForEach[0] = glm::vec3(1, 0, 1);
@@ -417,7 +447,7 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 	}
 	else {
 		printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
-		getchar();
+		getchar(); 
 		return 0;
 	}
 
