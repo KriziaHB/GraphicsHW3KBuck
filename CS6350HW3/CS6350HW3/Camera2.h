@@ -29,7 +29,7 @@ public:
 	GLfloat Pitch; 
 
 	//Constructor with vectors 
-	Camera2(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)) {
+	Camera2(glm::vec3 position = glm::vec3(0.0f, 0.0f, 8.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)) {
 		this->Position = position; 
 		this->WorldUp = up; 
 		this->Yaw = yaw; 
@@ -45,10 +45,6 @@ public:
 	}
 
 
-
-
-
-	
 
 private: 
 	glm::vec3 tempUpVec; //to store the upVector when jumped 

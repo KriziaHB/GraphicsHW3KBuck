@@ -16,13 +16,13 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp> 
 #include <glm/glm/ext.hpp> 
-#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
+//#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
 using namespace std; 
 
 
 //Prototype and global variables 
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path); 
-Camera2 cam(glm::vec3(0.0f, 0.0f, 8.0f));
+//Camera2 cam(glm::vec3(0.0f, 0.0f, 8.0f));
 glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
@@ -147,6 +147,7 @@ int main() {
 	};
 
 	//[KHB] Camera and Light angles, coordinates, and direction for camera
+	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f); //720p
 	GLfloat lightAngle = 1.0f;
 	GLfloat camAngle = 1.0f;
 	GLfloat cubeAngle = 0.0f; //[KHB] for rotating cubes 
@@ -228,6 +229,9 @@ int main() {
 		// [KHB] 6 radius, 3 height for circular movement 
 		lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
 
+		//[KHB] use shader 
+		glUseProgram(pid);
+
 		//rotate things 
 		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
 		// [KHB] 12 radius, opposite direction as light 
@@ -254,17 +258,16 @@ int main() {
 //		camX = 0.0f; 
 //		camZ = 10.0f; 
 */
-	//	cam.Position = glm::vec3(camX, camY, camZ); 
 
 
-//COME BAXK TO CAMERA!!!! 
 
-		//[KHB] View and Projection matrices (720p)
-		//position, look at origin, up vector 
-//		glm::mat4 view = glm::lookAt(cam.Position, cam.Position + glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 view = cam.GetViewMatrix(); 
-		glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f);
 
+		//[KHB] camera vectors 
+		glm::vec3 camPosition = glm::vec3(camX, camY, camZ); 
+		glm::vec3 camFront = glm::vec3(0.0f, 0.0f, -1.0f); 
+		glm::vec3 camUp = glm::vec3(0.0f, 1.0f, 0.0f); 
+		//position, position + look at origin, up vector 
+		glm::mat4 view = glm::lookAt(camPosition, camPosition + camFront, camUp);
 
 
 		//[KHB] all shader info from pid and lampid 
@@ -280,7 +283,7 @@ int main() {
 		//set to GPU 
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 		glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(camPosLoc, cam.Position.x, cam.Position.y, cam.Position.z);
+		glUniform3f(camPosLoc, camX, camY, camZ);
 		glUniform1i(revertLoc, 0);
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
@@ -291,7 +294,7 @@ int main() {
 			//draw cubes 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
-			model = glm::rotate(model, cubeAngle*(i + 1), rotationAlongAxis[i]);
+			model = glm::rotate(model, cubeAngle * (i + 1), rotationAlongAxis[i]);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -309,6 +312,7 @@ int main() {
 
 		{ // light visualization 
 			//use the added shader retrieval function to get the LampID  
+			glUseProgram(lampid); 
 			modelLoc = glGetUniformLocation(lampid, "model");
 			viewLoc = glGetUniformLocation(lampid, "view");
 			projLoc = glGetUniformLocation(lampid, "projection");
