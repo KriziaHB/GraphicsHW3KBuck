@@ -16,14 +16,13 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp> 
 #include <glm/glm/ext.hpp> 
-
 #include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
 using namespace std; 
 
 
 //Prototype and global variables 
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path); 
-Camera2 cam(glm::vec3(0.0f, 2.0f, 6.0f));
+Camera2 cam(glm::vec3(0.0f, 0.0f, 8.0f));
 glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
 glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
@@ -34,11 +33,11 @@ int main() {
 	char axis1, axis2, axis3;
 
 	//[KHB] Take user input for rotational axis information on each cube 
-	cout << "Please enter float values between -1.0 and 1.0 for x, y, and z separated by a space for Cube #1: ";
+	cout << "Please enter x, y, or z for Cube #1 axis of rotation: ";
 	cin >> axis1;
-	cout << "Please enter float values between 0.0 and 1.0 for x, y, and z separated by a space for Cube #2: ";
+	cout << "Please enter x, y, or z for Cube #2 axis of rotation: ";
 	cin >> axis2;
-	cout << "Please enter float values between 0.0 and 1.0 for x, y, and z separated by a space for Cube #3: ";
+	cout << "Please enter x, y, or z for Cube #3 axis of rotation: ";
 	cin >> axis3;
 
 	//[KHB] all rotating on different axes 
@@ -143,22 +142,18 @@ int main() {
 	//world space positions of cubes 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(4.0f, 0.0f, 0.0f),
-		glm::vec3(-4.0f, 0.0f, 0.0f)
+		glm::vec3(3.0f, 0.0f, 0.0f),
+		glm::vec3(-3.0f, 0.0f, 0.0f)
 	};
 
 	//[KHB] Camera and Light angles, coordinates, and direction for camera
-	float lightAngle = 1.0f;
-	float camAngle = 1.0f;
+	GLfloat lightAngle = 1.0f;
+	GLfloat camAngle = 1.0f;
+	GLfloat cubeAngle = 0.0f; //[KHB] for rotating cubes 
 	GLfloat camX = 0.0f;
-	GLfloat camY = 8.0f;
-	GLfloat camZ = 0.0f;
+	GLfloat camY = 0.0f;
+	GLfloat camZ = 8.0f;
 	float direction = 1.0f; //[KHB] for euclidean distance for camera from origin 
-	GLfloat angle = 0.0f; //[KHB] for rotating cubes 
-
-	//[KHB] View and Projection matrices (720p)
-	glm::mat4 view; 
-	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f);
 
 
 
@@ -174,10 +169,6 @@ int main() {
 		glfwTerminate();
 		return 1;
 	}
-
-
-
-
 
 	//[KHB] switch to GLFW and initialize GLEW 
 	glfwMakeContextCurrent(window);
@@ -222,8 +213,6 @@ int main() {
 
 
 
-
-
 	//[KHB] animation loop 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -234,13 +223,15 @@ int main() {
 		//[KHB] constant rotation for light, camera, and cubes 
 		lightAngle += 0.001f;
 		camAngle += 0.002f; 
-		angle += 0.005f; 
-		
+		cubeAngle += 0.005f; 
+
+		// [KHB] 6 radius, 3 height for circular movement 
+		lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
 
 		//rotate things 
 		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
 		// [KHB] 12 radius, opposite direction as light 
-		camX += (direction * 0.01f);					//* (-camAngle); 
+/*		camX += (direction * 0.01f);					//* (-camAngle); 
 		camY = 0.0f;
 //		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  //* (-camAngle); 
 		//Changes for X and Z to keep steady path around the origin
@@ -262,17 +253,18 @@ int main() {
 //		cam.Position = glm::vec3(0.0f, 0.0f, 0.0f);
 //		camX = 0.0f; 
 //		camZ = 10.0f; 
-		cam.Position = glm::vec3(camX, camY, camZ); 
+*/
+	//	cam.Position = glm::vec3(camX, camY, camZ); 
 
 
+//COME BAXK TO CAMERA!!!! 
 
-
+		//[KHB] View and Projection matrices (720p)
 		//position, look at origin, up vector 
-		view = glm::lookAt(cam.Position, cam.Position + glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//		glm::mat4 view = glm::lookAt(cam.Position, cam.Position + glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 view = cam.GetViewMatrix(); 
+		glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f);
 
-
-		// [KHB] 4 radius, 4 height for circular movement 
-		lightPos = glm::vec3(4.0f*glm::cos(lightAngle), 4.0 * glm::sin(lightAngle * 3), 4.0f*glm::sin(lightAngle)); 
 
 
 		//[KHB] all shader info from pid and lampid 
@@ -299,7 +291,7 @@ int main() {
 			//draw cubes 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
-			model = glm::rotate(model, angle*(i + 1), rotationAlongAxis[i]);
+			model = glm::rotate(model, cubeAngle*(i + 1), rotationAlongAxis[i]);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
