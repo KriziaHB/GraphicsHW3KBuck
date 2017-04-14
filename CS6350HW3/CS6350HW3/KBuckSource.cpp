@@ -241,27 +241,12 @@ int main() {
 
 
 		// [KHB] 12 radius, opposite direction as light 
-		camX += (direction * 0.01f);					// (-camAngle); 
-		camY = 0.0f;
-		//Changes for X and Z to keep steady path around the origin
-		if (camX >= 12.0f) 
-			direction = -1.0f;
-		else if (camX <= -12.0f)
-			direction = 1.0f;
-		if ((camX < 12.0f) && (camX > 0.0f) && (direction == -1.0f)) //quadrant x-, z+
-			camZ = sqrt(144 - (camX * camX));
-		else if ((camX > -12.0f) && (camX < 0.0f) && (direction == -1.0f)) //quadrant x-, z-
-			camZ = sqrt(144 - (camX * camX));
-		else if ((camX > -12.0f) && (camX < 0.0f) && (direction == 1.0f)) //quadrant x+, z-
-			camZ = -(sqrt(144 - (camX * camX)));
-		else if ((camX < 12.0f) && (camX > 0.0f) && (direction == 1.0f)) //quadrant x+, z+ 
-			camZ = -(sqrt(144 - (camX * camX)));
-		else
-			camZ += 0.01f; 
+		camX = 12.0f*cos(camAngle); 
+		camZ = 12.0f*sin(camAngle); 
 
-		//[KHB] camera vectors 
+		//[KHB] camera vectors
 		glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
-		glm::vec3 camFront = glm::vec3(GLfloat(direction * (-camAngle)), 0.0f, GLfloat(direction * (-camAngle))); 
+		glm::vec3 camFront = glm::vec3(glm::cos(camAngle), 0.0f, glm::sin(camAngle)); 
 		//position, position + look at origin, up vector 
 		view = glm::lookAt(camPosition, camFront, camUp);
 		projection = glm::perspective(1.0f, (GLfloat)1280.0f / (GLfloat)720.0f, 0.1f, 1000.0f); //720p
@@ -294,15 +279,15 @@ int main() {
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-/*		{ //the biggest cube 
+		{ //the biggest cube 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
-			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
+			model = glm::scale(model, glm::vec3(25.0f, 25.0f, 25.0f));
 			glUniform1i(revertLoc, 1);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		} */
+		} 
 
 		 // light visualization 
 			//use the added shader retrieval function to get the LampID  
