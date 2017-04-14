@@ -2,29 +2,27 @@
 //Variation on Code presented in class by Mustafa Tunc 
 //Project due: 4/14/2017
 
-#include <iostream> 
-#include <fstream> 
-#include <sstream> 
-#include <vector> 
-#include <cstdlib> 
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctime> 
+#include <stdlib.h> 
 #include <C:\Users\buckkr\Documents\glfw-3.2.1\LIB files\headers\GL\glew.h> 
 #include <GLFW/glfw3.h> 
 #include <glm/glm/glm.hpp>
+#include <glm/glm/gtx/transform.hpp>>
 #include <glm/glm/gtc/matrix_transform.hpp>
+#include <vector> 
+#include <fstream> 
+#include <sstream> 
+#include <iostream> 
+#include <glm/glm/gtx/euler_angles.hpp> 
+#include <glm/glm/gtx/norm.hpp> 
 #include <glm/glm/gtc/type_ptr.hpp> 
 #include <glm/glm/ext.hpp> 
 //#include "C:\Users\buckkr\Source\Repos\GraphicsHW3KBuck\CS6350HW3\CS6350HW3\Camera2.h" 
 using namespace std; 
 
 
-//Prototype and global variables 
+//Prototype 
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path); 
-//Camera2 cam(glm::vec3(0.0f, 0.0f, 8.0f));
-glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
-
 
 
 int main() {
@@ -153,16 +151,15 @@ int main() {
 	};
 
 	//[KHB] Camera and Light angles, coordinates, and direction for camera
+	glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
 	GLfloat lightAngle = 1.0f;
 	GLfloat camAngle = 1.0f;
 	GLfloat cubeAngle = 0.0f; 
 	GLfloat camX = 0.0f;
 	GLfloat camY = 0.0f;
-	GLfloat camZ = 8.0f;
+	GLfloat camZ = 12.0f;
 	//[KHB] for euclidean distance for camera from origin 
-	float direction = 1.0f; 
-	// [KHB] 6 radius, 3 height for circular movement 
-	lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
+	float direction = -1.0f; 
 	//[KHB] camera vectors 
 	glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
 	glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f));
@@ -229,11 +226,15 @@ int main() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// [KHB] 6 radius, 3 height for circular movement 
+		lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
+
 		//[KHB] constant rotation for light, camera, and cubes 
 		lightAngle += 0.001f;
 		glUseProgram(pid); 
 		camAngle += 0.002f; 
 		cubeAngle += 0.005f; 
+
 
 		// [KHB] 12 radius, opposite direction as light 
 		camX += (direction * 0.01f);					// (-camAngle); 
