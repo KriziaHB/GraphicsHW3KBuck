@@ -24,7 +24,6 @@ using namespace std;
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path); 
 //Camera2 cam(glm::vec3(0.0f, 0.0f, 8.0f));
 glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
-glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 
 
@@ -40,8 +39,13 @@ int main() {
 	cout << "Please enter x, y, or z for Cube #3 axis of rotation: ";
 	cin >> axis3;
 
+	//[KHB] view and projection matrices 
+	glm::mat4 view; 
+	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f); //720p
+
 	//[KHB] all rotating on different axes 
-	glm::vec3 rotationAlongAxis[3];{
+	glm::vec3 rotationAlongAxis[3];
+	{
 		GLfloat x, y, z;
 		if (axis1 == 'x') {
 			x = 1.0f; y = 0.0f; z = 0.0f;
@@ -83,9 +87,11 @@ int main() {
 
 	//[KHB] Custom color for each cube 
 	glm::vec3 cubeColorsForEach[3];
-	cubeColorsForEach[0] = glm::vec3(1, 0, 1);
-	cubeColorsForEach[1] = glm::vec3(1, 1, 0);
-	cubeColorsForEach[2] = glm::vec3(0, 1, 1);
+	{
+		cubeColorsForEach[0] = glm::vec3(1, 0, 1);
+		cubeColorsForEach[1] = glm::vec3(1, 1, 0);
+		cubeColorsForEach[2] = glm::vec3(0, 1, 1);
+	}
 
 	//[KHB] Cube vertices 
 	GLfloat vertices[] = { // U V is for texture 
@@ -147,15 +153,20 @@ int main() {
 	};
 
 	//[KHB] Camera and Light angles, coordinates, and direction for camera
-	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f); //720p
 	GLfloat lightAngle = 1.0f;
 	GLfloat camAngle = 1.0f;
-	GLfloat cubeAngle = 0.0f; //[KHB] for rotating cubes 
+	GLfloat cubeAngle = 0.0f; 
 	GLfloat camX = 0.0f;
 	GLfloat camY = 0.0f;
 	GLfloat camZ = 8.0f;
-	float direction = 1.0f; //[KHB] for euclidean distance for camera from origin 
-
+	//[KHB] for euclidean distance for camera from origin 
+	float direction = 1.0f; 
+	// [KHB] 6 radius, 3 height for circular movement 
+	lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
+	//[KHB] camera vectors 
+	glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
+	glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f));
+	glm::vec3 camUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 
 	//[KHB] Setup complete 
@@ -195,15 +206,12 @@ int main() {
 	GLuint VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glBindVertexArray(VAO); 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindVertexArray(VAO);
 	//position attribute 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
-	//[KHB] texture coordinate attribute - WILL NOT USE 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
 	//normal attribute 
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
@@ -218,26 +226,18 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//[KHB] constant rotation for light, camera, and cubes 
 		lightAngle += 0.001f;
+		glUseProgram(pid); 
 		camAngle += 0.002f; 
 		cubeAngle += 0.005f; 
 
-		// [KHB] 6 radius, 3 height for circular movement 
-		lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
-
-		//[KHB] use shader 
-		glUseProgram(pid);
-
-		//rotate things 
-		//cam.moveTo(glm::vec3(7.0f*glm::cos(lightAngle), 0,7.0f*glm::sin(lightAngle))); 
 		// [KHB] 12 radius, opposite direction as light 
 		camX += (direction * 0.01f);					// (-camAngle); 
 		camY = 0.0f;
-//		camZ = sqrt(144 - (camX*camX));					//= 8.0f;  // (-camAngle); 
 		//Changes for X and Z to keep steady path around the origin
 		if (camX >= 12.0f) 
 			direction = -1.0f;
@@ -254,14 +254,11 @@ int main() {
 		else
 			camZ += 0.01f; 
 
-
-
 		//[KHB] camera vectors 
 		glm::vec3 camPosition = glm::vec3(camX, camY, camZ); 
 		glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f)); 
-		glm::vec3 camUp = glm::vec3(0.0f, 1.0f, 0.0f); 
 		//position, position + look at origin, up vector 
-		glm::mat4 view = glm::lookAt(camPosition, camPosition + camFront, camUp);
+		view = glm::lookAt(camPosition, camPosition + camFront, camUp);
 
 
 		//[KHB] all shader info from pid and lampid 
@@ -276,12 +273,11 @@ int main() {
 
 		//set to GPU 
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(lightColorLoc, lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(camPosLoc, camX, camY, camZ);
+		glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
+		glUniform3f(camPosLoc, camPosition.x, camPosition.y, camPosition.z);
 		glUniform1i(revertLoc, 0);
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
 		glBindVertexArray(VAO);
 
 		for (int i = 0; i < 3; i++) {
@@ -294,10 +290,9 @@ int main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 		{ //the biggest cube 
-		  //[KHB] not using the biggest cube / room 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
-			model = glm::scale(model, glm::vec3(15.0f, 15.0f, 15.0f));
+			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
 			glUniform1i(revertLoc, 1);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
@@ -313,15 +308,15 @@ int main() {
 			cubeColorLoc = glGetUniformLocation(lampid, "colorChanged");
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-			glUniform3f(cubeColorLoc, lightColor.x, lightColor.y, lightColor.z);
+			glUniform3f(cubeColorLoc, 1.0f, 1.0f, 1.0f);
 			glm::mat4 model;
 			model = glm::translate(model, lightPos);
 			model = glm::scale(model, glm::vec3(0.3));
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glBindVertexArray(0); 
 		}
 
-		glBindVertexArray(0);
 		//swap the screen buffers 
 		glfwSwapBuffers(window);
 	}

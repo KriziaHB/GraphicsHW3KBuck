@@ -1,5 +1,3 @@
-//[KHB] previous shader.frag 
-//Removed texture 
 #version 330 core
 
 in vec3 FragPos;
@@ -11,6 +9,7 @@ uniform vec3 lightColor;
 uniform vec3 camPos;
 uniform vec3 cubeColor;
 uniform int revertNormals;
+//Removed texture 
 
 uniform sampler2D theTexture;
 
@@ -21,7 +20,7 @@ void main() {
 	vec3 lightAttenuated = lightColor * (1.0f / (1.0f + 0.004f * pow(distance(FragPos, lightPosition), 2.0f)));
 
 	//ambient 
-	float ambientStrength = 0.1f; //originally 0.1f; 
+	float ambientStrength = 0.10f; //originally 0.1f; 
 	vec3 ambient = ambientStrength * lightColor;
 
 	//diffuse 
@@ -41,3 +40,5 @@ void main() {
 	vec3 result = (ambient + lightAttenuated * (diffuse + specular)) * combinationOfColors;
 	color = vec4(result, 1.0f);
 }
+
+//previously shader.frag 

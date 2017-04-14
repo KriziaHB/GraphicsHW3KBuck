@@ -1,6 +1,3 @@
-//Previously shader.vert 
-//Removed texture 
-
 #version 330 core
 layout(location = 0) in vec3 position;
 layout(location = 2) in vec3 normal;
@@ -10,9 +7,8 @@ uniform mat4 view;
 uniform mat4 projection;
 
 uniform vec3 lightPosition;
-uniform vec3 lightColor;
-
 uniform int revertNormals;
+//Removed texture 
 
 out vec3 Normal;
 out vec3 FragPos;
@@ -26,3 +22,4 @@ void main()
 		Normal = Normal * (-1);
 	}
 }
+//Previously shader.vert 
