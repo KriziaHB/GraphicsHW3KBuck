@@ -59,6 +59,7 @@ int main() {
 	
 
 	//Initialize glfw and window (catch errors) 
+	glfwInit(); 
 	if (!glfwInit()) {
 		std::cerr << "ERROR: could not start GLFW3 \n";
 		return 1;
@@ -73,7 +74,11 @@ int main() {
 	//[KHB] switch to GLFW and initialize GLEW 
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
-	glewInit();
+	GLenum e = glewInit();
+	if (GLEW_OK != e) {
+		std::cerr << "ERROR: Could not start GLEW \n"; 
+		return 1; 
+	}
 
 	//[KHB] get and display version info then setup 
 	const GLubyte* renderer = glGetString(GL_RENDERER);
@@ -218,11 +223,12 @@ int main() {
 	glBindVertexArray(0);
 
 
+
 	//[KHB] animation loop 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// [KHB] 4 radius, 3 height for circular movement 
@@ -258,10 +264,11 @@ int main() {
 		glm::vec3 camPosition = glm::vec3(camX, camY, camZ); 
 		glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f)); 
 		//position, position + look at origin, up vector 
+		glLoadIdentity(); //**
 		view = glm::lookAt(camPosition, camPosition + camFront, camUp);
+		projection = glm::perspective(1.0f, (GLfloat)1280.0f / (GLfloat)720.0f, 0.1f, 1000.0f); //720p
 
-
-		//[KHB] all shader info from pid and lampid 
+		//[KHB] all shader info from pid, get uniform locations 
 		GLint modelLoc = glGetUniformLocation(pid, "model");
 		GLint viewLoc = glGetUniformLocation(pid, "view");
 		GLint projLoc = glGetUniformLocation(pid, "projection");
@@ -271,7 +278,7 @@ int main() {
 		GLint cubeColorLoc = glGetUniformLocation(pid, "cubeColor");
 		GLint revertLoc = glGetUniformLocation(pid, "revertNormals"); //use for the biggest cube 
 
-		//set to GPU 
+		//[KHB] pass to shader 
 		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 		glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);
 		glUniform3f(camPosLoc, camPosition.x, camPosition.y, camPosition.z);

@@ -37,7 +37,7 @@ void main() {
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32); //32 == phong component 
 	vec3 specular = specularStrength * spec * lightColor;
 
-	vec3 result = (ambient + lightAttenuated * (diffuse + specular)) * combinationOfColors;
+	vec3 result = (ambient + lightAttenuated * (diffuse + specular)) * cubeColor;
 	color = vec4(result, 1.0f);
 }
 
