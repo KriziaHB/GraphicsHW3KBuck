@@ -41,57 +41,105 @@ int main() {
 	glm::mat4 view;
 	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f); //720p
 
-	//[KHB] all rotating on different axes 
-	glm::vec3 rotationAlongAxis[3];
-		GLfloat x, y, z;
-		if (axis1 == 'x') {
-			x = 1.0f; y = 0.0f; z = 0.0f;
-		}
-		else if (axis1 == 'y') {
-			x = 0.0f; y = 1.0f; z = 0.0f;
-		}
-		else if (axis1 == 'z') {
-			x = 0.0f; y = 0.0f; z = 1.0f;
-		}
-		else {
-			x = -1.0f; y = 0.0f; z = 0.0f;
-		} 
-	rotationAlongAxis[0] = glm::vec3(x, y, z);
-		if (axis2 == 'x') {
-			x = 1.0f; y = 0.0f; z = 0.0f;
-		}
-		else if (axis2 == 'y') {
-			x = 0.0f; y = 1.0f; z = 0.0f;
-		}
-		else if (axis2 == 'z') {
-			x = 0.0f; y = 0.0f; z = 1.0f;
-		}
-		else {
-			x = 0.0f; y = -1.0f; z = 0.0f;
-		} 
-	rotationAlongAxis[1] = glm::vec3(x, y, z);
-		if (axis3 == 'x') {
-			x = 1.0f; y = 0.0f; z = 0.0f;
-		}
-		else if (axis3 == 'y') {
-			x = 0.0f; y = 1.0f; z = 0.0f;
-		}
-		else if (axis3 == 'z') {
-			x = 0.0f; y = 0.0f; z = 1.0f;
-		}
-		else {
-			x = 0.0f; y = 0.0f; z = -1.0f;
-		} 
-	rotationAlongAxis[2] = glm::vec3(x, y, z);
+	//[KHB] Camera and Light angles, coordinates, and direction for camera
+	glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
+	GLfloat lightAngle = 1.0f;
+	GLfloat camAngle = 1.0f;
+	GLfloat cubeAngle = 1.0f;
+	GLfloat camX = 0.0f;
+	GLfloat camY = 0.0f;
+	GLfloat camZ = 12.0f;
+	//[KHB] for euclidean distance for camera from origin 
+	float direction = -1.0f;
+	//[KHB] camera vectors 
+	glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
+	glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f));
+	glm::vec3 camUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 	
 
+	//Initialize glfw and window (catch errors) 
+	if (!glfwInit()) {
+		std::cerr << "ERROR: could not start GLFW3 \n";
+		return 1;
+	}
+	GLFWwindow* window = glfwCreateWindow(1280, 720, "Graphics Window", NULL, NULL);
+	if (!window) {
+		std::cerr << "ERROR: Could not open window with GLFW3 \n";
+		glfwTerminate();
+		return 1;
+	}
+
+	//[KHB] switch to GLFW and initialize GLEW 
+	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
+	glewInit();
+
+	//[KHB] get and display version info then setup 
+	const GLubyte* renderer = glGetString(GL_RENDERER);
+	const GLubyte* version = glGetString(GL_VERSION);
+	printf("Renderer: %s\n", renderer);
+	printf("Version: %s\n", version);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	//[KHB] use the added function to get the programID and LampID
+	GLuint pid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderFragment.hlsl");
+	GLuint lampid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampFragment.hlsl");
+
+	//[KHB] all rotating on different axes 
+	glm::vec3 rotationAlongAxis[3];
+	GLfloat x, y, z;
+	if (axis1 == 'x') {
+		x = 1.0f; y = 0.0f; z = 0.0f;
+	}
+	else if (axis1 == 'y') {
+		x = 0.0f; y = 1.0f; z = 0.0f;
+	}
+	else if (axis1 == 'z') {
+		x = 0.0f; y = 0.0f; z = 1.0f;
+	}
+	else {
+		x = -1.0f; y = 0.0f; z = 0.0f;
+	}
+	rotationAlongAxis[0] = glm::vec3(x, y, z);
+	if (axis2 == 'x') {
+		x = 1.0f; y = 0.0f; z = 0.0f;
+	}
+	else if (axis2 == 'y') {
+		x = 0.0f; y = 1.0f; z = 0.0f;
+	}
+	else if (axis2 == 'z') {
+		x = 0.0f; y = 0.0f; z = 1.0f;
+	}
+	else {
+		x = 0.0f; y = -1.0f; z = 0.0f;
+	}
+	rotationAlongAxis[1] = glm::vec3(x, y, z);
+	if (axis3 == 'x') {
+		x = 1.0f; y = 0.0f; z = 0.0f;
+	}
+	else if (axis3 == 'y') {
+		x = 0.0f; y = 1.0f; z = 0.0f;
+	}
+	else if (axis3 == 'z') {
+		x = 0.0f; y = 0.0f; z = 1.0f;
+	}
+	else {
+		x = 0.0f; y = 0.0f; z = -1.0f;
+	}
+	rotationAlongAxis[2] = glm::vec3(x, y, z);
+
+
 	//[KHB] Custom color for each cube 
-	glm::vec3 cubeColorsForEach[3] = 
+	glm::vec3 cubeColorsForEach[3] =
 	{
-		glm::vec3(1, 0, 0), 
-		glm::vec3(0, 1, 0), 
+		glm::vec3(1, 0, 0),
+		glm::vec3(0, 1, 0),
 		glm::vec3(0, 0, 1)
-	}; 
+	};
 
 	//[KHB] Cube vertices 
 	GLfloat vertices[] = { // U V is for texture 
@@ -152,53 +200,6 @@ int main() {
 		glm::vec3(-3.0f, 0.0f, 0.0f)
 	};
 
-	//[KHB] Camera and Light angles, coordinates, and direction for camera
-	glm::vec3 lightPos(0.0f, 0.0f, 4.0f);
-	GLfloat lightAngle = 1.0f;
-	GLfloat camAngle = 1.0f;
-	GLfloat cubeAngle = 0.0f; 
-	GLfloat camX = 0.0f;
-	GLfloat camY = 0.0f;
-	GLfloat camZ = 12.0f;
-	//[KHB] for euclidean distance for camera from origin 
-	float direction = -1.0f; 
-	//[KHB] camera vectors 
-	glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
-	glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f));
-	glm::vec3 camUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-
-	//[KHB] Setup complete 
-	//Initialize glfw and window (catch errors) 
-	if (!glfwInit()) {
-		std::cerr << "ERROR: could not start GLFW3 \n";
-		return 1;
-	}
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Graphics Window", NULL, NULL);
-	if (!window) {
-		std::cerr << "ERROR: Could not open window with GLFW3 \n";
-		glfwTerminate();
-		return 1;
-	}
-
-	//[KHB] switch to GLFW and initialize GLEW 
-	glfwMakeContextCurrent(window);
-	glewExperimental = GL_TRUE;
-	glewInit();
-
-	//[KHB] get and display version info then setup 
-	const GLubyte* renderer = glGetString(GL_RENDERER);
-	const GLubyte* version = glGetString(GL_VERSION);
-	printf("Renderer: %s\n", renderer);
-	printf("Version: %s\n", version);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	//[KHB] use the added function to get the programID and LampID
-	GLuint pid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/ShaderFragment.hlsl");
-	GLuint lampid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampFragment.hlsl");
 
 
 	//generate and bind vertex buffer and vertex array objects
@@ -217,10 +218,6 @@ int main() {
 	glBindVertexArray(0);
 
 
-
-
-
-
 	//[KHB] animation loop 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -228,12 +225,12 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// [KHB] 6 radius, 3 height for circular movement 
-		lightPos = glm::vec3(6.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 6.0f*glm::sin(lightAngle));
+		// [KHB] 4 radius, 3 height for circular movement 
+		lightPos = glm::vec3(4.0f*glm::cos(lightAngle), 3.0 * glm::sin(lightAngle * 3), 4.0f*glm::sin(lightAngle));
 
 		//[KHB] constant rotation for light, camera, and cubes 
+		glUseProgram(pid);
 		lightAngle += 0.001f;
-		glUseProgram(pid); 
 		camAngle += 0.002f; 
 		cubeAngle += 0.005f; 
 
@@ -292,7 +289,7 @@ int main() {
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-/*		{ //the biggest cube 
+		{ //the biggest cube 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
 			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
@@ -300,9 +297,9 @@ int main() {
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		} */
+		} 
 
-		{ // light visualization 
+		 // light visualization 
 			//use the added shader retrieval function to get the LampID  
 			glUseProgram(lampid); 
 			modelLoc = glGetUniformLocation(lampid, "model");
@@ -318,7 +315,7 @@ int main() {
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 			glBindVertexArray(0); 
-		}
+		
 
 		//swap the screen buffers 
 		glfwSwapBuffers(window);
