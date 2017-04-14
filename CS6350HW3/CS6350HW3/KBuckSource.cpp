@@ -139,11 +139,10 @@ int main() {
 
 
 	//[KHB] Custom color for each cube 
-	glm::vec3 cubeColorsForEach[3] =
-	{
-		glm::vec3(1, 0, 0),
-		glm::vec3(0, 1, 0),
-		glm::vec3(0, 0, 1)
+	glm::vec3 cubeColorsForEach[3] = {
+		glm::vec3(1, 1, 0),
+		glm::vec3(0, 1, 1),
+		glm::vec3(1, 0, 1)
 	};
 
 	//[KHB] Cube vertices 
@@ -236,8 +235,8 @@ int main() {
 
 		//[KHB] constant rotation for light, camera, and cubes 
 		glUseProgram(pid);
-		lightAngle += 0.001f;
-		camAngle += 0.002f; 
+		lightAngle += 0.002f;
+		camAngle += 0.001f; 
 		cubeAngle += 0.005f; 
 
 
@@ -261,11 +260,10 @@ int main() {
 			camZ += 0.01f; 
 
 		//[KHB] camera vectors 
-		glm::vec3 camPosition = glm::vec3(camX, camY, camZ); 
-		glm::vec3 camFront = glm::vec3(0.0f, 0.0f, GLfloat(direction * 1.0f)); 
+		glm::vec3 camPosition = glm::vec3(camX, camY, camZ);
+		glm::vec3 camFront = glm::vec3(GLfloat(direction * (-camAngle)), 0.0f, GLfloat(direction * (-camAngle))); 
 		//position, position + look at origin, up vector 
-		glLoadIdentity(); //**
-		view = glm::lookAt(camPosition, camPosition + camFront, camUp);
+		view = glm::lookAt(camPosition, camFront, camUp);
 		projection = glm::perspective(1.0f, (GLfloat)1280.0f / (GLfloat)720.0f, 0.1f, 1000.0f); //720p
 
 		//[KHB] all shader info from pid, get uniform locations 
@@ -296,7 +294,7 @@ int main() {
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		{ //the biggest cube 
+/*		{ //the biggest cube 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
 			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
@@ -304,7 +302,7 @@ int main() {
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		} 
+		} */
 
 		 // light visualization 
 			//use the added shader retrieval function to get the LampID  
