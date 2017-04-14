@@ -38,12 +38,11 @@ int main() {
 	cin >> axis3;
 
 	//[KHB] view and projection matrices 
-	glm::mat4 view; 
+	glm::mat4 view;
 	glm::mat4 projection = glm::perspective(1.0f, 1280.0f / 720.0f, 0.1f, 1000.0f); //720p
 
 	//[KHB] all rotating on different axes 
 	glm::vec3 rotationAlongAxis[3];
-	{
 		GLfloat x, y, z;
 		if (axis1 == 'x') {
 			x = 1.0f; y = 0.0f; z = 0.0f;
@@ -56,7 +55,8 @@ int main() {
 		}
 		else {
 			x = -1.0f; y = 0.0f; z = 0.0f;
-		} rotationAlongAxis[0] = glm::vec3(x, y, z);
+		} 
+	rotationAlongAxis[0] = glm::vec3(x, y, z);
 		if (axis2 == 'x') {
 			x = 1.0f; y = 0.0f; z = 0.0f;
 		}
@@ -68,7 +68,8 @@ int main() {
 		}
 		else {
 			x = 0.0f; y = -1.0f; z = 0.0f;
-		} rotationAlongAxis[1] = glm::vec3(x, y, z);
+		} 
+	rotationAlongAxis[1] = glm::vec3(x, y, z);
 		if (axis3 == 'x') {
 			x = 1.0f; y = 0.0f; z = 0.0f;
 		}
@@ -80,16 +81,17 @@ int main() {
 		}
 		else {
 			x = 0.0f; y = 0.0f; z = -1.0f;
-		} rotationAlongAxis[2] = glm::vec3(x, y, z);
-	}
+		} 
+	rotationAlongAxis[2] = glm::vec3(x, y, z);
+	
 
 	//[KHB] Custom color for each cube 
-	glm::vec3 cubeColorsForEach[3];
+	glm::vec3 cubeColorsForEach[3] = 
 	{
-		cubeColorsForEach[0] = glm::vec3(1, 0, 1);
-		cubeColorsForEach[1] = glm::vec3(1, 1, 0);
-		cubeColorsForEach[2] = glm::vec3(0, 1, 1);
-	}
+		glm::vec3(1, 0, 0), 
+		glm::vec3(0, 1, 0), 
+		glm::vec3(0, 0, 1)
+	}; 
 
 	//[KHB] Cube vertices 
 	GLfloat vertices[] = { // U V is for texture 
@@ -199,7 +201,7 @@ int main() {
 	GLuint lampid = LoadShaders("C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampVertex.hlsl", "C:/Users/buckkr/Source/Repos/GraphicsHW3KBuck/CS6350HW3/LampFragment.hlsl");
 
 
-
+	//generate and bind vertex buffer and vertex array objects
 	GLuint VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -223,7 +225,7 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// [KHB] 6 radius, 3 height for circular movement 
@@ -285,12 +287,12 @@ int main() {
 			//draw cubes 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
-			model = glm::rotate(model, cubeAngle * (i + 1), rotationAlongAxis[i]);
+			model = glm::rotate(model, cubeAngle, rotationAlongAxis[i]);
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, cubeColorsForEach[i].x, cubeColorsForEach[i].y, cubeColorsForEach[i].z);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-		{ //the biggest cube 
+/*		{ //the biggest cube 
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[0]);
 			model = glm::scale(model, glm::vec3(20.0f, 20.0f, 20.0f));
@@ -298,7 +300,7 @@ int main() {
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glUniform3f(cubeColorLoc, 0.5, 0.5f, 0.5f);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
-		} 
+		} */
 
 		{ // light visualization 
 			//use the added shader retrieval function to get the LampID  
